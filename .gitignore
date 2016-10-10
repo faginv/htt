@@ -4,5 +4,6 @@
 # Webstrorm
 .idea/workspace.xml
 
-
+# npm
+node_modules/**/.bin/
 
