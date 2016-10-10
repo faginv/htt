@@ -1,3 +1,3 @@
 @echo off
 
-npm_modules\.bin\jake %*
+node_modules\.bin\jake %*
