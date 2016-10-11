@@ -1,6 +1,6 @@
 @echo off
 
-if exist node_modules\.bin\jake goto :run_jake  
+if exist node_modules\.bin\jake.cmd goto :run_jake  
 
 echo Building npm modules:
 call npm rebuild
