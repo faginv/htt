@@ -1,4 +1,4 @@
-/* globals desc: false, task: false, complete: false, fail: false */
+/* globals jake:false, desc:false, task:false, complete:false, fail:false */
 
 (function() {
   "use strict";
@@ -7,11 +7,21 @@
 
   var jshint = require("simplebuild-jshint");
 
+  //**** General purpose tasks
   desc("Default build");  
   task("default", [ "version", "lint" ], function(){
     console.log("\n\nBUILD OK");  
   });
 
+  desc("Run a localhost server");
+  task("run", function(){
+    jake.exec("node node_modules/http-server/bin/http-server src", {interactive: true}, complete);
+
+    console.log("Run http-server here");
+  });
+
+
+  //**** Supporting tasks
   desc("Check Node version");
   task("version", function() {
     console.log("Checking Node version: .");
