@@ -1,16 +1,13 @@
 (function(){
   "use strict";
+  
+  var assert = require("chai").assert;
 
-  assertEqual(add(3, 4), 7);
+  assert.equal(add(3, 4), 7);
+
 
   function add(a, b){
     return a - b;
-  }
-
-  function assertEqual(actual, expected){
-    if(actual !== expected){
-      throw new Error("Expected " + expected + ", but got " + actual);
-    }
   }
 
 }());
