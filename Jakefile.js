@@ -4,12 +4,21 @@
   "use strict";
 
   var semver = require("semver");
-
   var jshint = require("simplebuild-jshint");
+  var karma = require("simplebuild-karma");
+
+  var KARMA_CONFIG = "karma.conf.js";
 
   //**** General purpose tasks
+  
+  desc("Start the Karma server (run this first)");
+  task("karma", function(){
+    console.log("Starting Karma server:");
+    karma.start({ configFile: KARMA_CONFIG }, complete, fail);
+  }, {async: true});
+  
   desc("Default build");  
-  task("default", [ "version", "lint" ], function(){
+  task("default", [ "version", "lint", "test" ], function(){
     console.log("\n\nBUILD OK");  
   });
 
@@ -41,7 +50,28 @@
     
     jshint.checkFiles({
       files: [ "Jakefile.js", "src/**/*.js"],
-      options: {
+      options: lintOption(),
+      globals: lintGlobals()
+    }, complete, fail);
+    //jake.exec("node node_modules/jshint/bin/jshint Jakefile.js", {interactive: true}, complete);
+  }, {async: true});  
+
+  desc("Run tests");
+  task("test", function() {
+    console.log("Testing JavaScript:");
+      
+    karma.run({
+      configFile: KARMA_CONFIG,
+      expectedBrowsers: [
+        "Firefox 45.0.0 (Linux 0.0.0)",
+        "Chrome 53.0.2785 (Linux 0.0.0)"
+      ],
+      strict: !process.env.loose 
+    }, complete, fail);
+  }, { async: true});
+    
+  function lintOption() {
+    return {
         bitwise: true,
         eqeqeq: true,
         forin: true,
@@ -57,10 +87,18 @@
 
         node: true,
         browser: true      
-      },
-      globals: {}
-    }, complete, fail);
-    //jake.exec("node node_modules/jshint/bin/jshint Jakefile.js", {interactive: true}, complete);
-  }, {async: true});  
+      };
+  }
+  function lintGlobals() {
+    return {
+      // Mocha
+        describe: false,
+        it: false,
+        before: false,
+        after: false,
+        beforeEach: false,
+        afterEach: false
+    };
+  }
 }());
 
